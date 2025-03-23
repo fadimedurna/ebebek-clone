@@ -13,12 +13,21 @@
   // jQuery'yi yükle
   await loadScript("https://code.jquery.com/jquery-3.6.0.min.js");
 
+  // Ana sayfa kontrolü
+  const isHomePage = () => {
+    return $(location).attr("pathname") === "/test.html"; // Ana sayfa URL'ini buraya girin
+  };
+
   // INIT Başlangıç metodu
   const init = async () => {
-    buildHTML();
-    buildCSS();
-    await fetchProducts();
-    setEvents();
+    if (isHomePage()) {
+      buildHTML();
+      buildCSS();
+      await fetchProducts();
+      setEvents();
+    } else {
+      console.log("wrong page");
+    }
   };
 
   const buildHTML = () => {
@@ -103,6 +112,7 @@
 
     .main-nav {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-between;
       align-items: center;
       padding: 0 20px;
@@ -110,20 +120,30 @@
 
     .nav-left img {
       height: 40px;
+      max-width: 100%;
     }
 
     .nav-center {
       display: flex;
+      flex-wrap: wrap;
       list-style-type: none;
+      justify-content: center;
+      margin: 10px 0;
     }
 
     .nav-center li {
-      margin: 0 15px;
+      margin: 5px 15px;
       cursor: pointer;
     }
 
+    .nav-right {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
     .nav-right span {
-      margin-left: 15px;
+      margin: 5px 15px;
       cursor: pointer;
     }
 
@@ -133,7 +153,8 @@
     }
 
     .after-stories {
-      width: 90%;
+      width: 100%;
+      max-width: 1100px;
       margin: 20px auto; 
       text-align: center; 
     }
@@ -143,27 +164,31 @@
       height: auto; 
       max-height: 300px; 
       object-fit: cover; 
-      border-radius: 15px; 
+      border-radius: 30px; 
       box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
     }
     
-     .product-carousel {
+    .product-carousel {
       position: relative;
       padding: 20px 0;
       margin-bottom: 20px;
+      width: 90%; 
+      max-width: 1100px; 
+      margin-left: auto;
+      margin-right: auto;
     }
 
     .carousel-wrapper {
       display: flex;
       flex-direction: column;
       align-items: center;
-      padding: 0 20px;
+      padding: 0 30px; 
       background-color: #f8f8f8;
       position: relative;
-      border-radius: 10px;
+      border-radius: 30px;
     }
 
-     .prev, .next {
+    .prev, .next {
       position: absolute;
       top: 50%;
       transform: translateY(-50%);
@@ -187,8 +212,8 @@
       background-color: #f0f0f0;
     }
 
-    .prev { left: 10px; }
-    .next { right: 10px; }
+    .prev { left: -30px; }
+    .next { right: -30px; }
 
     .carousel-wrapper h2 {
       font-size: 24px;
@@ -197,27 +222,29 @@
       color: #333;
     }
 
-     .carousel-container {
+    .carousel-container {
       display: flex;
       flex-direction: row;
-      overflow-x: scroll;
+      overflow-x: auto;
       overflow-y: hidden;
-      scrollbar-width: none;  /* Firefox için */
-      -ms-overflow-style: none;  /* Internet Explorer ve Edge için */
+      scrollbar-width: none;
+      -ms-overflow-style: none;
       scroll-behavior: smooth;
-      gap: 20px;
+      gap: 15px; 
       padding: 10px 0;
-      width: calc(100% - 100px);
+      width: 100%;
     }
 
     .carousel-container::-webkit-scrollbar {
-      display: none;  /* Chrome, Safari ve Opera için */
+      display: none;
     }
 
     .carousel-item {
       flex: 0 0 auto;
-      width: 250px;
-      height: 450px;
+      width: calc(25% - 11.25px); /* Gap değişikliğine göre */
+      max-width: 230px; 
+      min-width: 180px; 
+      height: auto;
       background-color: #fff;
       border-radius: 8px;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
@@ -226,7 +253,7 @@
       position: relative;
       cursor: pointer;
       transition: all 0.3s ease; 
-      border: 2px solid transparent; 
+      border: 2px solid transparent;  
     }
 
     .carousel-item:hover {
@@ -245,9 +272,9 @@
       font-size: 16px;
       line-height: 1.2;
       margin: 0 auto 20px;
-      color:rgb(81, 86, 95);
+      color: rgb(81, 86, 95);
       height: 60px;
-      width: 70%;
+      width: 100%;
       overflow: hidden;
       display: -webkit-box;
       -webkit-line-clamp: 3;
@@ -256,7 +283,7 @@
       text-align: center;
     }
 
-     .heart-button {
+    .heart-button {
       position: absolute;
       z-index: 1;
       top: 10px;
@@ -284,7 +311,7 @@
 
     .heart-button.active {
       color: #ff6600;
-       box-shadow: 0 4px 8px rgba(255,102,0,0.3);
+      box-shadow: 0 4px 8px rgba(255,102,0,0.3);
     }
 
     .price-container {
@@ -321,7 +348,6 @@
       display: inline-block;
     }
 
-    
     footer {
       background-color: #333;
       color: #fff;
@@ -330,7 +356,12 @@
 
     .footer-content {
       display: flex;
+      flex-wrap: wrap;
       justify-content: space-around;
+    }
+
+    .footer-section {
+      margin-bottom: 20px;
     }
 
     .footer-section h3 {
@@ -344,6 +375,67 @@
     .footer-section ul li {
       margin-bottom: 5px;
       cursor: pointer;
+    }
+
+    @media (max-width: 1024px) {
+      .carousel-item {
+        width: calc(33.33% - 10px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      .main-nav {
+        flex-direction: column;
+        align-items: center
+      }
+
+      .nav-center, .nav-right {
+        display: none;
+      }
+
+       .carousel-item {
+        width: calc(50% - 7.5px);
+      }
+
+      .product-carousel {
+        width: 95%; 
+      }
+
+      .prev, .next {
+        width: 30px;
+        height: 30px;
+        font-size: 14px;
+      }
+
+      .prev { left: -15px; }
+      .next { right: -15px; }
+    }
+
+    @media (max-width: 480px) {
+
+      .product-carousel {
+        width: 100%;
+      }
+
+      .prev { left: -10px; }
+      .next { right: -10px; }
+
+      .carousel-item {
+        width: 100%;
+        margin: 0 auto;
+      }
+
+      .carousel-item h3 {
+        font-size: 14px;
+      }
+
+      .price {
+        font-size: 16px;
+      }
+
+      .original-price, .discount {
+        font-size: 12px;
+      }
     }
   `;
 
@@ -425,10 +517,8 @@
   };
 
   const setEvents = () => {
-    //pathname kısmını kendi .html dosyanıza göre düzenleyin
-    if ($(location).attr("pathname") !== "/test.html") {
-      console.log("wrong page");
-      return;
+    if (!isHomePage()) {
+      return; // Ana sayfa değilse, event'leri set etme
     }
 
     const container = $(".carousel-container");
@@ -478,6 +568,7 @@
         event.preventDefault();
         const url = target.closest(".carousel-item").data("url");
         if (url) window.open(url, "_blank");
+        console.log("wrong page");
       }
     });
   };
