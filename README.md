@@ -1,1 +1,1 @@
-# EBEBEK CLONE - Product Carousel Case
+# ebebek-clone: Product Carousel Case
