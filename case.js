@@ -14,8 +14,9 @@
   await loadScript("https://code.jquery.com/jquery-3.6.0.min.js");
 
   // Ana sayfa kontrolü
+  // Ana sayfa URL'ini buraya girin
   const isHomePage = () => {
-    return $(location).attr("pathname") === "/test.html"; // Ana sayfa URL'ini buraya girin
+    return $(location).attr("pathname") === "/";
   };
 
   // INIT Başlangıç metodu
@@ -442,7 +443,7 @@
     $("<style>").text(css).appendTo("head");
   };
 
-  //fetch products from API
+  //API'dan productları çekiyoruz
   const fetchProducts = () => {
     // Önce localStorage'dan ürünleri kontrol et
     const cachedProducts = localStorage.getItem("cachedProducts");
@@ -480,7 +481,7 @@
       });
   };
 
-  //product rendering
+  //Productları render ediyoruz
   const renderProducts = (products) => {
     const carouselContainer = $(".carousel-container");
     const favorites = JSON.parse(localStorage.getItem("favorites")) || [];
@@ -554,11 +555,11 @@
         let favorites = JSON.parse(localStorage.getItem("favorites")) || [];
 
         if (target.hasClass("active")) {
-          // Remove from favorites
+          //Favoriden çıkarma
           favorites = favorites.filter((id) => id !== productId);
           target.removeClass("active");
         } else {
-          // Add to favorites
+          // Favorilere ekleme
           favorites.push(productId);
           target.addClass("active");
         }
