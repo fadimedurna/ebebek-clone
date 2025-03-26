@@ -39,11 +39,11 @@
         <img alt="ebebek logo" src="https://cdn05.e-bebek.com/y.ebebek/9973673459742.svg">
       </div>
       <ul class="nav-center">
-        <li>Kategoriler</li>
-        <li>Beğeniler</li>
-        <li>Markalar</li>
-        <li>İndirimdekiler</li>
-        <li>İletişim</li>
+        <li class="nav-li" data-url="https://example.com/kategoriler">Kategoriler</li>
+        <li class="nav-li" data-url="https://example.com/begeniler">Beğeniler</li>
+        <li class="nav-li" data-url="https://example.com/markalar">Markalar</li>
+        <li class="nav-li" data-url="https://example.com/indirimdekiler">İndirimdekiler</li>
+        <li class="nav-li" data-url="https://example.com/iletisim">İletişim</li>
       </ul>
       <div class="nav-right">
         <span>Giriş Yap</span>
@@ -571,6 +571,13 @@
         if (url) window.open(url, "_blank");
         console.log("wrong page");
       }
+    });
+
+    $(".nav-li").on("click", function (event) {
+      event.preventDefault();
+      const url = $(this).data("url");
+      window.open(url, "_blank");
+      console.log("wrong page");
     });
   };
 
