@@ -16,7 +16,7 @@
   // Ana sayfa kontrolü
   // Ana sayfa URL'ini buraya girin
   const isHomePage = () => {
-    return $(location).attr("pathname") === "/test.html";
+    return $(location).attr("pathname") === "/";
   };
 
   // INIT Başlangıç metodu
