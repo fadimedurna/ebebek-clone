@@ -16,7 +16,7 @@
   // Ana sayfa kontrolü
   // Ana sayfa URL'ini buraya girin
   const isHomePage = () => {
-    return $(location).attr("pathname") === "/";
+    return $(location).attr("pathname") === "/test.html";
   };
 
   // INIT Başlangıç metodu
@@ -38,16 +38,19 @@
       <div class="nav-left">
         <img alt="ebebek logo" src="https://cdn05.e-bebek.com/y.ebebek/9973673459742.svg">
       </div>
-      <ul class="nav-center">
-        <li class="nav-li" data-url="https://example.com/kategoriler">Kategoriler</li>
-        <li class="nav-li" data-url="https://example.com/begeniler">Beğeniler</li>
-        <li class="nav-li" data-url="https://example.com/markalar">Markalar</li>
-        <li class="nav-li" data-url="https://example.com/indirimdekiler">İndirimdekiler</li>
-        <li class="nav-li" data-url="https://example.com/iletisim">İletişim</li>
-      </ul>
-      <div class="nav-right">
-        <span>Giriş Yap</span>
-        <span>Favorilerim</span>
+      <button class="menu-toggle" id="menuToggle">&#9776;</button>
+      <div class="menu-content">
+        <ul class="nav-center">
+          <li class="nav-li" data-url="https://example.com/kategoriler">Kategoriler</li>
+          <li class="nav-li" data-url="https://example.com/begeniler">Beğeniler</li>
+          <li class="nav-li" data-url="https://example.com/markalar">Markalar</li>
+          <li class="nav-li" data-url="https://example.com/indirimdekiler">İndirimdekiler</li>
+          <li class="nav-li" data-url="https://example.com/iletisim">İletişim</li>
+        </ul>
+        <div class="nav-right">
+          <span>Giriş Yap</span>
+          <span>Favorilerim</span>
+        </div>
       </div>
     </nav>
   </header>
@@ -114,7 +117,6 @@
     .main-nav {
       display: flex;
       flex-wrap: wrap;
-      justify-content: space-between;
       align-items: center;
       padding: 0 20px;
     }
@@ -124,12 +126,25 @@
       max-width: 100%;
     }
 
+    .menu-toggle {
+      display: none;
+      background: none;
+    }
+
+    .menu-content {
+      display: flex;
+      flex-grow: 1;
+      justify-content: space-between;
+      align-items: center;
+    }
+
     .nav-center {
       display: flex;
       flex-wrap: wrap;
       list-style-type: none;
       justify-content: center;
       margin: 10px 0;
+      flex-grow: 1;
     }
 
     .nav-center li {
@@ -140,7 +155,8 @@
     .nav-right {
       display: flex;
       flex-wrap: wrap;
-      justify-content: center;
+      justify-content: flex-end;
+      margin-left: auto;
     }
 
     .nav-right span {
@@ -379,22 +395,122 @@
     }
 
     @media (max-width: 1024px) {
+      .main-nav {
+        flex-direction: column;
+        align-items: center;
+      }
+        
+      .menu-content {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .nav-right {
+        margin-left: 0;
+        justify-content: center;
+      }
+        
       .carousel-item {
         width: calc(33.33% - 10px);
       }
     }
 
-    @media (max-width: 768px) {
+     @media (max-width: 768px) {
       .main-nav {
-        flex-direction: column;
-        align-items: center
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-between;
+        flex-wrap: wrap;
+      }
+      
+      .nav-left {
+        order: 1;
+      }
+
+      .menu-toggle {
+        border: none;
+        font-size: 24px;
+        cursor: pointer;
+        padding: 10px;
+        display: block;
+        order: 2;
+        z-index: 1001;
       }
 
       .nav-center, .nav-right {
-        display: none;
+        top: 0;
+        right: -250px;
+        flex-direction: column;
+        align-items: flex-start;
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+        display: flex;
       }
 
-       .carousel-item {
+      .nav-center.active, .nav-right.active {
+        right: 0;
+      }
+
+      .menu-content {
+        position: fixed;
+        top: 0;
+        right: -250px;
+        width: 250px;
+        height: 100vh;
+        background-color: #f8f8f8;
+        display: flex;
+        flex-direction: column;
+        justify-content: flex-start;
+        padding: 60px 20px 20px;
+        transition: right 0.3s ease-in-out;
+        z-index: 1000;
+      }
+
+      .menu-content.active {
+        right: 0;
+      }
+
+      .menu-content .nav-center,
+      .menu-content .nav-right {
+        position: static;
+        width: 100%;
+        height: auto;
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+      }
+
+      .menu-content .nav-center {
+        order: 1;
+        margin-bottom: 20px;
+      }
+
+      .menu-content .nav-right {
+        order: 2;
+      }
+
+      .menu-content .nav-center li,
+      .menu-content .nav-right span {
+        margin: 10px 0;
+        width: 100%;
+        text-align: left;
+      }
+
+      .menu-backdrop {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0,0,0,0.5);
+        z-index: 999;
+      }
+
+      body.menu-open {
+        overflow: hidden;
+      }
+
+      .carousel-item {
         width: calc(50% - 7.5px);
       }
 
@@ -571,6 +687,27 @@
         if (url) window.open(url, "_blank");
         console.log("wrong page");
       }
+    });
+
+    $("#menuToggle").on("click", function () {
+      $("body").toggleClass("menu-open");
+
+      if (!$(".menu-content").hasClass("active")) {
+        $("<div class='menu-backdrop'></div>").appendTo("body");
+
+        setTimeout(() => {
+          $(".menu-content").addClass("active");
+        }, 10);
+      } else {
+        $(".menu-content").removeClass("active");
+        $(".menu-backdrop").remove();
+      }
+    });
+
+    $(document).on("click", ".menu-backdrop", function () {
+      $(".menu-content").removeClass("active");
+      $("body").removeClass("menu-open");
+      $(this).remove();
     });
 
     $(".nav-li").on("click", function (event) {
