@@ -455,7 +455,7 @@
         position: fixed;
         top: 0;
         right: -250px;
-        width: 250px;
+        width: 180px;
         height: 100vh;
         background-color: #f8f8f8;
         display: flex;
@@ -478,6 +478,7 @@
         background-color: transparent;
         box-shadow: none;
         padding: 0;
+        flex-grow: 0;
       }
 
       .menu-content .nav-center {
