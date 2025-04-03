@@ -714,7 +714,7 @@
     $(".nav-li").on("click", function (event) {
       event.preventDefault();
       const url = $(this).data("url");
-      window.open(url, "_blank");
+      window.open(url, "_self");
       console.log("wrong page");
     });
   };
